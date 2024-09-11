@@ -2,7 +2,6 @@ package guru.springframework.sfgrestbrewery.services;
 
 import guru.springframework.sfgrestbrewery.domain.Beer;
 import guru.springframework.sfgrestbrewery.repositories.BeerRepository;
-import guru.springframework.sfgrestbrewery.web.controller.NotFoundException;
 import guru.springframework.sfgrestbrewery.web.mappers.BeerMapper;
 import guru.springframework.sfgrestbrewery.web.model.BeerDto;
 import guru.springframework.sfgrestbrewery.web.model.BeerPagedList;
@@ -13,10 +12,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * Created by jt on 2019-04-20.
@@ -33,7 +30,7 @@ public class BeerServiceImpl implements BeerService {
     public BeerPagedList listBeers(String beerName, BeerStyleEnum beerStyle, PageRequest pageRequest, Boolean showInventoryOnHand) {
 
         BeerPagedList beerPagedList = null;
-        Page<Beer> beerPage = null;
+        Page<Beer> beerPage;
 
 //        if (!StringUtils.isEmpty(beerName) && !StringUtils.isEmpty(beerStyle)) {
 //            //search both
@@ -85,14 +82,12 @@ public class BeerServiceImpl implements BeerService {
 //                    beerRepository.findById(beerId).orElseThrow(NotFoundException::new)
 //            );
 //        }
-
         return null;
     }
 
     @Override
     public BeerDto saveNewBeer(BeerDto beerDto) {
-        // return beerMapper.beerToBeerDto(beerRepository.save(beerMapper.beerDtoToBeer(beerDto)));
-
+     //   return beerMapper.beerToBeerDto(beerRepository.save(beerMapper.beerDtoToBeer(beerDto)));
         return null;
     }
 
@@ -106,7 +101,6 @@ public class BeerServiceImpl implements BeerService {
 //        beer.setUpc(beerDto.getUpc());
 //
 //        return beerMapper.beerToBeerDto(beerRepository.save(beer));
-
         return null;
     }
 
