@@ -72,7 +72,7 @@ class BeerControllerTest {
 
     @Test
     void listBeers() {
-        given(beerService.listBeers(any(), any(), any(), any())).willReturn(defaulBeerPagedList);
+        given(beerService.listBeers(any(), any(), any(), any())).willReturn(Mono.just(defaulBeerPagedList));
 
         webTestClient.get()
                 .uri("/api/v1/beer/")
