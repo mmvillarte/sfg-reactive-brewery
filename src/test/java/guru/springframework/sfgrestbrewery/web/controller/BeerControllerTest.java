@@ -8,19 +8,19 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.BDDMockito.given;
 
-@WebFluxTest(BeerController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class BeerControllerTest {
 
     @Autowired
@@ -46,8 +46,8 @@ class BeerControllerTest {
 
     @Test
     void getBeerById() {
-        UUID beerId = UUID.randomUUID();
-        given(beerService.getById(any(), any())).willReturn(defaultBeerDto);
+        Integer beerId = 1;
+        given(beerService.getById(any(), any())).willReturn(Mono.just(defaultBeerDto));
 
         webTestClient.get()
                 .uri("/api/v1/beer/" + beerId)
