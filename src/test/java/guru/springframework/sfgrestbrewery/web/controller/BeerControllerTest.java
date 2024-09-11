@@ -7,7 +7,6 @@ import guru.springframework.sfgrestbrewery.web.model.BeerPagedList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -59,6 +58,19 @@ class BeerControllerTest {
     }
 
     @Test
+    void getBeerByUpc() {
+        given(beerService.getByUpc(any())).willReturn(Mono.just(defaultBeerDto));
+
+        webTestClient.get()
+                .uri("/api/v1/beerUpc/" + BeerLoader.BEER_1_UPC)
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(BeerDto.class)
+                .value(beerDto -> beerDto.getBeerName(), equalTo(defaultBeerDto.getBeerName()));
+    }
+
+    @Test
     void listBeers() {
         given(beerService.listBeers(any(), any(), any(), any())).willReturn(defaulBeerPagedList);
 
@@ -69,18 +81,5 @@ class BeerControllerTest {
                 .expectStatus().isOk()
                 .expectBody(BeerPagedList.class)
                 .value(beerPagedList -> beerPagedList.get().findFirst().get().getBeerName(), equalTo(defaultBeerDto.getBeerName()));
-    }
-
-    @Test
-    void getBeerByUpc() {
-        given(beerService.getByUpc(any())).willReturn(defaultBeerDto);
-
-        webTestClient.get()
-                .uri("/api/v1/beerUpc/" + BeerLoader.BEER_1_UPC)
-                .accept(MediaType.APPLICATION_JSON)
-                .exchange()
-                .expectStatus().isOk()
-                .expectBody(BeerDto.class)
-                .value(beerDto -> beerDto.getBeerName(), equalTo(defaultBeerDto.getBeerName()));
     }
 }
