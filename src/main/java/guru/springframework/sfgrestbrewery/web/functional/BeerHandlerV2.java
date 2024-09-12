@@ -54,6 +54,18 @@ public class BeerHandlerV2 {
                 });
     }
 
+    public Mono<ServerResponse> updateBeer(ServerRequest request){
+        return request.bodyToMono(BeerDto.class)
+                .doOnNext(this::validate)
+                .flatMap(beerDto -> {
+                    return beerService.updateBeer(Integer.valueOf(request.pathVariable("beerId")), beerDto)
+                            .flatMap(savedBeerDto -> {
+                                log.debug("Saved Beer Id: {}", savedBeerDto.getId());
+                                return ServerResponse.noContent().build();
+                            });
+                });
+    }
+
     private void validate(BeerDto beerDto) {
         Errors errors = new BeanPropertyBindingResult(beerDto, "beerDto");
 
